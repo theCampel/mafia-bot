@@ -1,6 +1,19 @@
 {
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.8",
+    "csv-writer": "^1.6.0",
+    "dotenv": "^16.5.0",
     "qrcode-terminal": "^0.12.0",
     "whatsapp-web.js": "^1.28.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "cross-env APP_ENV=development node app.js",
+    "prod": "cross-env APP_ENV=production node app.js",
+    "extract:dev": "cross-env APP_ENV=development node ./tools/extract_every_chat_to_CSV.js",
+    "extract:prod": "cross-env APP_ENV=production node ./tools/extract_every_chat_to_CSV.js"
   }
 }
