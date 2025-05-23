@@ -19,7 +19,7 @@ I'm going to use this as a scratchpad, so if anyone's coming across this, I'm so
 - For searching through messages, I'm considering:
   - Can vector search the DB, take the most relevent messages (and their surrounding messages)
   - Generate a search query and search the DB with that.
-  - Pump it all into context. (`~100k` tokens across all chats * 0.15$ per 1M tokens = [$0.015 for EVERY SINGLE query](https://ai.google.dev/gemini-api/docs/pricing)) [If you want to help out 😉](https://buymeacoffee.com/leocamacho3)
+  - Pump it all into context. (`~100k` tokens across all chats * 0.15$ per 1M tokens = [$0.015 for EVERY SINGLE query](https://ai.google.dev/gemini-api/docs/pricing)) ([Click here if you want to help out 😉](https://buymeacoffee.com/leocamacho3))
 - 
 
 
@@ -45,10 +45,11 @@ I'm going to use this as a scratchpad, so if anyone's coming across this, I'm so
 | `has_media`          | `bool`      | Indicates if message contains media |
 
 ### Unicorn Farm Chat IDs:
+```
 { id: '120363359504745590@g.us', name: 'Unicorn Farm' },
 { id: '120363419170859917@g.us', name: 'Unicorn Mafia' },
 { id: '120363401735030139@g.us', name: 'Hackathons' },
-
+```
 > 🚨 Note: As a way of practising writing prod-ready code, I wrote prod/dev npm scripts. 
 > The dev script uses a gc I have with some friends. Hence Appleton Shaggers lol. 
 > Also, I'm not sure how secure it is to publicly share the chat IDs, so sorry if it absolutely ruins the community.
