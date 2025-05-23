@@ -10,3 +10,5 @@ package-lock.json
 
 wa_as_messages.csv
 wa_um_messages.csv
+
+.DS_Store

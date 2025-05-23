@@ -23,7 +23,7 @@ if (APP_ENV === 'production') {
     messagesTableName = process.env.PROD_MESSAGES_TABLE || 'wa_um_messages'; // e.g., messages_prod
 } else { // Development or any other environment
     targetChats = [
-        { id: '120363412226772179@g.us', name: 'Group Appleton Shaggers' }
+        { id: '120363412226772179@g.us', name: 'Appleton Shaggers' }
     ];
     messagesTableName = process.env.DEV_MESSAGES_TABLE || 'wa_as_messages'; // e.g., messages_dev
 }
