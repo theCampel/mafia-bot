@@ -2,25 +2,32 @@
   "dependencies": {
     "csv-writer": "^1.6.0",
     "dotenv": "^16.5.0",
+    "module-alias": "^2.2.3",
     "pg": "^8.11.3",
     "qrcode-terminal": "^0.12.0",
+    "tsconfig-paths": "^4.2.0",
     "whatsapp-web.js": "^1.31.0"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
-    "typescript": "^5.3.3",
-    "ts-node": "^10.9.2",
     "@types/node": "^20.10.5",
     "@types/pg": "^8.10.9",
-    "@types/qrcode-terminal": "^0.12.2"
+    "@types/qrcode-terminal": "^0.12.2",
+    "cross-env": "^7.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   },
   "scripts": {
     "build": "tsc",
-    "start": "node dist/app.js",
-    "dev": "cross-env APP_ENV=development ts-node app.ts",
-    "prod": "cross-env APP_ENV=production ts-node app.ts",
-    "extract:dev": "cross-env APP_ENV=development ts-node ./tools/extract_every_chat_to_CSV.ts",
-    "extract:prod": "cross-env APP_ENV=production ts-node ./tools/extract_every_chat_to_CSV.ts",
-    "extract:ids": "ts-node ./tools/extract_chat_ids.ts"
+    "start": "node -r module-alias/register dist/app.js",
+    "dev": "cross-env APP_ENV=development ts-node -r tsconfig-paths/register src/app.ts",
+    "prod": "cross-env APP_ENV=production ts-node -r tsconfig-paths/register src/app.ts",
+    "extract:dev": "cross-env APP_ENV=development ts-node -r tsconfig-paths/register src/tools/extract_every_chat_to_CSV.ts",
+    "extract:prod": "cross-env APP_ENV=production ts-node -r tsconfig-paths/register src/tools/extract_every_chat_to_CSV.ts",
+    "extract:ids": "ts-node -r tsconfig-paths/register src/tools/extract_chat_ids.ts",
+    "setup-db:dev": "cross-env APP_ENV=development ts-node -r tsconfig-paths/register src/scripts/setup-db.ts",
+    "setup-db:prod": "cross-env APP_ENV=production ts-node -r tsconfig-paths/register src/scripts/setup-db.ts"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }

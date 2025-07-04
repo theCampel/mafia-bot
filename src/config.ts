@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 import path from 'path';
-import { AppConfig, ChatInfo, Environment } from './types';
+import { AppConfig, ChatInfo, Environment } from '@/types';
 
 // Load .env file from the root directory
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
 const APP_ENV = (process.env.APP_ENV || 'development') as Environment;
 
@@ -15,7 +15,7 @@ const databaseUrl =
   process.env.DATABASE_URL;
 
 if (!databaseUrl) {
-  throw new Error('Missing required database connection: Please set DATABASE_URL_UNPOOLED, POSTGRES_URL, or DATABASE_URL');
+  throw new Error('Missing required database connection: Please set DATABASE_URL_UNPOOLED, POSTGRES_URL, or DATABASE_URL in your .env file');
 }
 
 let targetChats: ChatInfo[];
