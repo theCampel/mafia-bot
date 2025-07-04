@@ -1,5 +1,5 @@
 # Mafia Bot:
-WhatsApp Mafia Bot that uses [WhatsApp JS Web API](https://github.com/pedroslopez/whatsapp-web.js) to extract messages from WhatsApp groups and store them in a Supabase database. Eventually, the goal is to have a @askPerplexity-like bot that can answer questions and be generally useful within the gc (as well as DM people [that have subscribed] summaries of what's happened in the gc recently / notify them of anything they may find interesting). I'd also like a dashboard that can plug into the website - that would be cool.
+WhatsApp Mafia Bot that uses [WhatsApp JS Web API](https://github.com/pedroslopez/whatsapp-web.js) to extract messages from WhatsApp groups and store them in a Neon database. Eventually, the goal is to have a @askPerplexity-like bot that can answer questions and be generally useful within the gc (as well as DM people [that have subscribed] summaries of what's happened in the gc recently / notify them of anything they may find interesting). I'd also like a dashboard that can plug into the website - that would be cool.
 
 ## So Far:
 - [x] Have a working bot that can read incoming messages, extract messages from arbitrary groups etc.

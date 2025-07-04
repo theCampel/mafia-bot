@@ -12,3 +12,7 @@ wa_as_messages.csv
 wa_um_messages.csv
 
 .DS_Store
+
+# TypeScript compilation output
+dist/
+*.tsbuildinfo

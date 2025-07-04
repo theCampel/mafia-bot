@@ -1,19 +1,26 @@
 {
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.8",
     "csv-writer": "^1.6.0",
     "dotenv": "^16.5.0",
+    "pg": "^8.11.3",
     "qrcode-terminal": "^0.12.0",
-    "whatsapp-web.js": "^1.28.0"
+    "whatsapp-web.js": "^1.31.0"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2",
+    "@types/node": "^20.10.5",
+    "@types/pg": "^8.10.9",
+    "@types/qrcode-terminal": "^0.12.2"
   },
   "scripts": {
-    "start": "node app.js",
-    "dev": "cross-env APP_ENV=development node app.js",
-    "prod": "cross-env APP_ENV=production node app.js",
-    "extract:dev": "cross-env APP_ENV=development node ./tools/extract_every_chat_to_CSV.js",
-    "extract:prod": "cross-env APP_ENV=production node ./tools/extract_every_chat_to_CSV.js"
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "cross-env APP_ENV=development ts-node app.ts",
+    "prod": "cross-env APP_ENV=production ts-node app.ts",
+    "extract:dev": "cross-env APP_ENV=development ts-node ./tools/extract_every_chat_to_CSV.ts",
+    "extract:prod": "cross-env APP_ENV=production ts-node ./tools/extract_every_chat_to_CSV.ts",
+    "extract:ids": "ts-node ./tools/extract_chat_ids.ts"
   }
 }
