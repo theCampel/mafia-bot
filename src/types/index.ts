@@ -93,7 +93,7 @@ export interface CSVMessageRecord {
 }
 
 // Environment types
-export type Environment = 'development' | 'production';
+export type Environment = 'development' | 'ef-dev' | 'production';
 
 // Error types
 export interface AppError extends Error {

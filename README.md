@@ -49,7 +49,12 @@ I'm going to use this as a scratchpad, so if anyone's coming across this, I'm so
 { id: '120363359504745590@g.us', name: 'Unicorn Farm' },
 { id: '120363419170859917@g.us', name: 'Unicorn Mafia' },
 { id: '120363401735030139@g.us', name: 'Hackathons' },
+
+{ id: '120363400368012779@g.us', name: 'EF Builders’ Retreat: July 2025' }
+
 ```
 > 🚨 Note: As a way of practising writing prod-ready code, I wrote prod/dev npm scripts. 
 > The dev script uses a gc I have with some friends. Hence Appleton Shaggers lol. 
 > Also, I'm not sure how secure it is to publicly share the chat IDs, so sorry if it absolutely ruins the community.
+
+

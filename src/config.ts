@@ -27,8 +27,14 @@ if (APP_ENV === 'production') {
     { id: '120363401735030139@g.us', name: 'Hackathons' },
   ];
   messagesTableName = process.env.PROD_MESSAGES_TABLE || 'um_messages';
+} else if (APP_ENV === 'ef-dev') {
+  // EF Builders development environment
+  targetChats = [
+    { id: '120363400368012779@g.us', name: 'EF Builders\' Retreat: July 2025' },
+  ];
+  messagesTableName = process.env.EF_MESSAGES_TABLE || 'ef_messages';
 } else {
-  // Development environment
+  // Development environment (default)
   targetChats = [
     { id: '120363412226772179@g.us', name: 'Appleton Shaggers' },
   ];
