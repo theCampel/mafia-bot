@@ -8,6 +8,8 @@ package-lock.json
 # Session data for whatsapp-web.js
 .wwebjs_auth/
 .wwebjs_cache/
+.wwebjs_auth_backfill/
+.wwebjs_auth_fetcher/
 src/session/
 
 wa_as_messages.csv

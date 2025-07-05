@@ -6,6 +6,7 @@ export interface AppConfig {
   APP_ENV: string;
   TARGET_CHATS: ChatInfo[];
   DATABASE_URL: string;
+  DATABASE_URL_POOLED?: string;
   MESSAGES_TABLE_NAME: string;
 }
 

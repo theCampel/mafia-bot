@@ -19,11 +19,12 @@
   "scripts": {
     "build": "tsc",
     "start": "node -r module-alias/register dist/app.js",
-    "dev": "cross-env APP_ENV=development ts-node -r tsconfig-paths/register src/app.ts",
-    "prod": "cross-env APP_ENV=production ts-node -r tsconfig-paths/register src/app.ts",
+    "dev": "npm run build && cross-env APP_ENV=development node -r module-alias/register dist/app.js",
+    "prod": "npm run build && cross-env APP_ENV=production node -r module-alias/register dist/app.js",
     "extract:dev": "cross-env APP_ENV=development ts-node -r tsconfig-paths/register src/tools/extract_every_chat_to_CSV.ts",
     "extract:prod": "cross-env APP_ENV=production ts-node -r tsconfig-paths/register src/tools/extract_every_chat_to_CSV.ts",
     "extract:ids": "ts-node -r tsconfig-paths/register src/tools/extract_chat_ids.ts",
+    "backfill:history": "ts-node -r tsconfig-paths/register src/tools/backfill_chat_history.ts",
     "setup-db:dev": "cross-env APP_ENV=development ts-node -r tsconfig-paths/register src/scripts/setup-db.ts",
     "setup-db:prod": "cross-env APP_ENV=production ts-node -r tsconfig-paths/register src/scripts/setup-db.ts"
   },

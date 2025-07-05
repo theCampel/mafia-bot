@@ -1,6 +1,5 @@
 import { Pool } from 'pg';
 import { DatabaseConfig } from '@/types/database';
-import config from '@/config';
 
 export class DatabaseService {
   private pool: Pool;
@@ -8,7 +7,6 @@ export class DatabaseService {
   constructor(dbConfig: DatabaseConfig) {
     this.pool = new Pool({
       connectionString: dbConfig.connectionString,
-      ssl: config.APP_ENV === 'production' ? { rejectUnauthorized: false } : false,
     });
 
     this.pool.on('connect', () => {

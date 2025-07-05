@@ -1,6 +1,7 @@
 import { Message } from 'whatsapp-web.js';
 import { IMessageProcessor } from '@/types/processing';
 import { DatabaseService } from '@/services/DatabaseService';
+import config from '@/config';
 
 export class DatabaseProcessor implements IMessageProcessor {
   private db: DatabaseService;
@@ -10,29 +11,37 @@ export class DatabaseProcessor implements IMessageProcessor {
   }
 
   async process(message: Message): Promise<void> {
-    console.log(`[DatabaseProcessor] Storing message ID: ${message.id._serialized}`);
-    
-    // In a real implementation, you would map the message to your database schema
-    // and call the database service to insert it.
-    // For now, this is just a placeholder.
-    
+    const query = `
+      INSERT INTO ${config.MESSAGES_TABLE_NAME} (id, chat_id, sender_id, message_text, message_type, timestamp, has_media, quoted_message_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      ON CONFLICT (id) DO NOTHING;
+    `;
+
     const messageData = {
       id: message.id._serialized,
-      chatId: message.from,
+      chatId: message.id.remote,
       senderId: message.author || message.from,
-      body: message.body,
+      body: message.body || '',
+      type: message.type,
       timestamp: new Date(message.timestamp * 1000),
       hasMedia: message.hasMedia,
+      quotedMessageId: message.hasQuotedMsg ? (await message.getQuotedMessage()).id._serialized : null,
     };
-    
-    // Example of calling the database service
-    // await this.db.insertMessage(messageData);
-    
-    await this.dummyDelay(); // Simulate async database operation
-    console.log(`[DatabaseProcessor] Stored message ID: ${message.id._serialized}`);
-  }
 
-  private dummyDelay(ms: number = 50): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    try {
+      await this.db.query(query, [
+        messageData.id,
+        messageData.chatId,
+        messageData.senderId,
+        messageData.body,
+        messageData.type,
+        messageData.timestamp,
+        messageData.hasMedia,
+        messageData.quotedMessageId,
+      ]);
+      console.log(`[DatabaseProcessor] Stored message ID: ${message.id._serialized}`);
+    } catch (error) {
+      console.error(`[DatabaseProcessor] Error storing message ID ${message.id._serialized}:`, error);
+    }
   }
 } 
