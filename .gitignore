@@ -20,3 +20,5 @@ wa_um_messages.csv
 # TypeScript compilation output
 dist/
 *.tsbuildinfo
+
+session/
