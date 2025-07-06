@@ -84,14 +84,13 @@ export class SyncService {
     const newMessages: Message[] = [];
     if (lastTimestamp) {
       // If we have a timestamp, filter out messages we already have
+      // Messages are ordered newest to oldest, so we collect all messages newer than lastTimestamp
       for (const msg of messages) {
         const msgTimestamp = new Date(msg.timestamp * 1000);
         if (msgTimestamp > lastTimestamp) {
           newMessages.push(msg);
-        } else {
-          // Messages are ordered newest to oldest, so we can stop here
-          break;
         }
+        // Don't break here - continue checking all messages since they're not guaranteed to be in perfect order
       }
     } else {
       // If it's a new chat, take all fetched messages

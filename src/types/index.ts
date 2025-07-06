@@ -59,6 +59,24 @@ export interface RawWhatsAppMessage {
   };
 }
 
+// Notification system types
+export interface RelevanceAnalysis {
+  is_relevant: boolean;
+  topic?: string;
+  summary?: string;
+}
+
+export interface NotificationCooldown {
+  topic: string;
+  lastNotified: number;
+}
+
+export interface MessageBuffer {
+  chatId: string;
+  messages: { sender_id: string; message_text: string; timestamp: Date }[];
+  lastActivity: number;
+}
+
 // Luma event types (for future implementation)
 export interface LumaEvent {
   id: string;

@@ -89,7 +89,7 @@ export class SummaryProcessor implements IMessageProcessor {
         config.MESSAGES_TABLE_NAME
       );
 
-
+      console.log(`\n\n\nuser id: ${userId}`);
 
       // Step 8: Format for AI
       if (messages.length === 0) {
