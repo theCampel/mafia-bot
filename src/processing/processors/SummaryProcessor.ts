@@ -9,6 +9,7 @@ export class SummaryProcessor implements IMessageProcessor {
   private geminiService: GeminiService;
   private client: Client;
   private requestTimestamps = new Map<string, number[]>();
+  private contactCache = new Map<string, string>(); // Cache for contact names
 
   // Rate limiting: max 3 requests per 24 hours
   private readonly MAX_REQUESTS_PER_DAY = 3;
@@ -97,7 +98,8 @@ export class SummaryProcessor implements IMessageProcessor {
         return;
       }
 
-      const formattedHistory = this.formatMessagesForAI(messages);
+      const formattedHistory = await this.formatMessagesForAI(messages);
+      console.log(formattedHistory);
       console.log(`[SummaryProcessor] Found ${messages.length} messages to summarize from ${targetChatName}`);
 
       // Step 9: Generate Summary
@@ -137,19 +139,46 @@ export class SummaryProcessor implements IMessageProcessor {
     this.requestTimestamps.set(userId, userRequests);
   }
 
-  private formatMessagesForAI(messages: { sender_id: string; message_text: string; timestamp: Date }[]): string {
-    return messages.map(msg => {
-      const time = msg.timestamp.toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit',
-        hour12: false 
-      });
-      
-      // Extract just the phone number part for cleaner display
-      const senderDisplay = msg.sender_id.split('@')[0];
-      
-      return `[${time}] ${senderDisplay}: ${msg.message_text}`;
-    }).join('\n');
+  private async formatMessagesForAI(messages: { sender_id: string; message_text: string; timestamp: Date }[]): Promise<string> {
+    const formattedMessages = await Promise.all(
+      messages.map(async (msg) => {
+        const time = msg.timestamp.toLocaleTimeString('en-US', { 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: false 
+        });
+        
+        // Try to get the contact name, fallback to phone number
+        let senderDisplay = msg.sender_id.split('@')[0]; // Default to phone number
+        
+        // Check cache first
+        if (this.contactCache.has(msg.sender_id)) {
+          senderDisplay = this.contactCache.get(msg.sender_id)!;
+        } else {
+          try {
+            const contact = await this.client.getContactById(msg.sender_id);
+            if (contact && contact.name) {
+              senderDisplay = contact.name;
+              this.contactCache.set(msg.sender_id, contact.name);
+            } else if (contact && contact.pushname) {
+              senderDisplay = contact.pushname;
+              this.contactCache.set(msg.sender_id, contact.pushname);
+            } else {
+              // Cache the phone number to avoid repeated failed lookups
+              this.contactCache.set(msg.sender_id, senderDisplay);
+            }
+          } catch (error) {
+            // If we can't get contact info, cache the phone number
+            console.debug(`[SummaryProcessor] Could not get contact info for ${msg.sender_id}`);
+            this.contactCache.set(msg.sender_id, senderDisplay);
+          }
+        }
+        
+        return `[${time}] ${senderDisplay}: ${msg.message_text}`;
+      })
+    );
+    
+    return formattedMessages.join('\n');
   }
 
   private async isUserInGroup(userId: string, groupId: string): Promise<boolean> {

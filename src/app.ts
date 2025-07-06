@@ -6,6 +6,7 @@ import { DatabaseProcessor } from '@/processing/processors/DatabaseProcessor';
 import { LumaProcessor } from '@/processing/processors/LumaProcessor';
 import { MentionProcessor } from '@/processing/processors/MentionProcessor';
 import { SummaryProcessor } from '@/processing/processors/SummaryProcessor';
+import { AskProcessor } from '@/processing/processors/AskProcessor';
 import { DatabaseService } from '@/services/DatabaseService';
 import { GeminiService } from '@/services/GeminiService';
 import config from '@/config';
@@ -31,6 +32,7 @@ const databaseProcessor = new DatabaseProcessor(databaseService);
 const lumaProcessor = new LumaProcessor();
 const mentionProcessor = new MentionProcessor();
 const summaryProcessor = new SummaryProcessor(databaseService, geminiService, client);
+const askProcessor = new AskProcessor(databaseService, geminiService, client);
 
 // 4. Initialize Message Router with all processors
 const messageRouter = new MessageRouter([
@@ -38,6 +40,7 @@ const messageRouter = new MessageRouter([
   lumaProcessor,
   mentionProcessor,
   summaryProcessor,
+  askProcessor,
 ]);
 
 // +++ Initialize SyncService

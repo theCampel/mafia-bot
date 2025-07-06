@@ -40,6 +40,21 @@ export class DatabaseService {
     return result.rows;
   }
 
+  public async getAllMessages(
+    chatId: string, 
+    tableName: string
+  ): Promise<{ sender_id: string; message_text: string; timestamp: Date }[]> {
+    const query = `
+      SELECT sender_id, message_text, timestamp
+      FROM ${tableName}
+      WHERE chat_id = $1
+      ORDER BY timestamp ASC
+    `;
+    
+    const result = await this.pool.query(query, [chatId]);
+    return result.rows;
+  }
+
   public async close() {
     await this.pool.end();
     console.log('✅ Database pool closed');

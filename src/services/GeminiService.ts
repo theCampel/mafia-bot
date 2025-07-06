@@ -37,4 +37,34 @@ ${chatHistory}`;
       throw new Error(`Failed to generate summary: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
+
+  public async generateAnswer(chatHistory: string, question: string): Promise<string> {
+    const prompt = `You're an AI that is a member of a WhatsApp group chat. You will be given a question and a chat history.
+
+    You must answer the question asked, based on the conversation around it. Be clear and concise, but also be include some very high level context. 
+    
+    Do not just do a text extraction.
+    
+Use ONLY the information from the chat history below to answer the user's question. If the answer cannot be found in the provided text, state clearly: "I could not find an answer to that in the chat history." Do not make information up.
+
+Based on the history, please answer this question:
+"${question}"
+
+--- CHAT HISTORY ---
+${chatHistory}
+--------------------`;
+
+    try {
+      console.log('[GeminiService] Generating answer...');
+      const result = await this.model.generateContent(prompt);
+      const response = await result.response;
+      const answer = response.text();
+      
+      console.log('[GeminiService] Answer generated successfully');
+      return answer;
+    } catch (error) {
+      console.error('[GeminiService] Error generating answer:', error);
+      throw new Error(`Failed to generate answer: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
 } 
