@@ -8,6 +8,7 @@ export interface AppConfig {
   DATABASE_URL: string;
   DATABASE_URL_POOLED?: string;
   MESSAGES_TABLE_NAME: string;
+  GEMINI_API_KEY: string;
 }
 
 export interface ChatInfo {

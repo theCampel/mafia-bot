@@ -11,6 +11,14 @@ export class DatabaseProcessor implements IMessageProcessor {
   }
 
   async process(message: Message): Promise<void> {
+    
+    // Do not store if from not a target chat
+    // TODO: Eventually, this will be a smarter 'add to the db that 
+    // the person is in' type shi. 
+    if (!config.TARGET_CHATS.some(chat => chat.id === message.id.remote)) {
+      return;
+    }
+
     const query = `
       INSERT INTO ${config.MESSAGES_TABLE_NAME} (id, chat_id, sender_id, message_text, message_type, timestamp, has_media, quoted_message_id)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)

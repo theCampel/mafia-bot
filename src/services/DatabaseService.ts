@@ -24,6 +24,22 @@ export class DatabaseService {
     return res;
   }
 
+  public async getMessagesInRange(
+    chatId: string, 
+    sinceDate: Date, 
+    tableName: string
+  ): Promise<{ sender_id: string; message_text: string; timestamp: Date }[]> {
+    const query = `
+      SELECT sender_id, message_text, timestamp
+      FROM ${tableName}
+      WHERE chat_id = $1 AND timestamp >= $2
+      ORDER BY timestamp ASC
+    `;
+    
+    const result = await this.pool.query(query, [chatId, sinceDate]);
+    return result.rows;
+  }
+
   public async close() {
     await this.pool.end();
     console.log('✅ Database pool closed');

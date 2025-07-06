@@ -5,7 +5,9 @@ import { MessageRouter } from '@/processing/MessageRouter';
 import { DatabaseProcessor } from '@/processing/processors/DatabaseProcessor';
 import { LumaProcessor } from '@/processing/processors/LumaProcessor';
 import { MentionProcessor } from '@/processing/processors/MentionProcessor';
+import { SummaryProcessor } from '@/processing/processors/SummaryProcessor';
 import { DatabaseService } from '@/services/DatabaseService';
+import { GeminiService } from '@/services/GeminiService';
 import config from '@/config';
 import { SyncService } from './services/SyncService';
 
@@ -17,22 +19,26 @@ const databaseService = new DatabaseService({
   connectionString: config.DATABASE_URL,
 });
 
-// 2. Initialize Processors
+const geminiService = new GeminiService(config.GEMINI_API_KEY);
+
+// 2. Initialize WhatsApp Client (needed for processors)
+const client = new Client({
+  authStrategy: new LocalAuth(),
+});
+
+// 3. Initialize Processors
 const databaseProcessor = new DatabaseProcessor(databaseService);
 const lumaProcessor = new LumaProcessor();
 const mentionProcessor = new MentionProcessor();
+const summaryProcessor = new SummaryProcessor(databaseService, geminiService, client);
 
-// 3. Initialize Message Router with all processors
+// 4. Initialize Message Router with all processors
 const messageRouter = new MessageRouter([
   databaseProcessor,
   lumaProcessor,
   mentionProcessor,
+  summaryProcessor,
 ]);
-
-// 4. Initialize WhatsApp Client
-const client = new Client({
-  authStrategy: new LocalAuth(),
-});
 
 // +++ Initialize SyncService
 const syncService = new SyncService(client, databaseService, databaseProcessor, config);
@@ -56,9 +62,9 @@ client.on('ready', () => {
 // 5. Route incoming messages
 client.on('message', (message) => {
   // Only process messages from target chats
-  if (!targetChatIdSet.has(message.from)) {
-    return;
-  }
+  // if (!targetChatIdSet.has(message.from)) {
+  //   return;
+  // }
 
   messageRouter.handle(message).catch((error: Error) => {
     console.error('Error handling message:', error);

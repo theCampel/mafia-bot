@@ -17,6 +17,12 @@ if (!databaseUrl) {
   throw new Error('Missing required database connection: Please set either DATABASE_URL_UNPOOLED or DATABASE_URL in your .env file');
 }
 
+// Gemini API key validation
+const geminiApiKey = process.env.GEMINI_API_KEY;
+if (!geminiApiKey) {
+  throw new Error('Missing required environment variable: GEMINI_API_KEY');
+}
+
 let targetChats: ChatInfo[];
 let messagesTableName: string;
 
@@ -47,6 +53,7 @@ const config: AppConfig = {
   DATABASE_URL: databaseUrl,
   DATABASE_URL_POOLED: pooledDbUrl,
   MESSAGES_TABLE_NAME: messagesTableName,
+  GEMINI_API_KEY: geminiApiKey,
 };
 
 export default config;
@@ -58,4 +65,5 @@ export const {
   DATABASE_URL,
   DATABASE_URL_POOLED,
   MESSAGES_TABLE_NAME,
+  GEMINI_API_KEY,
 } = config; 
