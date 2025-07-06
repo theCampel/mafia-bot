@@ -73,9 +73,9 @@ export class SummaryProcessor implements IMessageProcessor {
       return;
     }
 
-    // Step 6: User Feedback (Acknowledge Request)
-    await this.client.sendMessage(userId, 
-      `Got it! Generating a summary for the '${targetChatName}' group for the last ${hours} hours. This might take a moment...`);
+    // // Step 6: User Feedback (Acknowledge Request)
+    // await this.client.sendMessage(userId, 
+    //   `Got it! Generating a summary for the '${targetChatName}' group for the last ${hours} hours. This might take a moment...`);
 
     // Record the request for rate limiting
     this.recordRequest(userId);

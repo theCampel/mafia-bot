@@ -64,10 +64,10 @@ export class AskProcessor implements IMessageProcessor {
       }
 
       const command = message.body.replace(/@\d+/g, '').trim();
-      const questionMatch = command.match(/^ask\s+(.+)$/);
+      const questionMatch = command.match(/^!ask\s+(.+)$/);
 
       if (!questionMatch) {
-        await message.reply("Please provide a question after 'ask'. Example: @bot ask What was discussed about the project?");
+        await message.reply("Please provide a question after '!ask'. Example: !ask What was discussed about the project?");
         return;
       }
 
@@ -85,14 +85,14 @@ export class AskProcessor implements IMessageProcessor {
       return; // Not a valid invocation context
     }
 
-    // Step B: Acknowledge the Request
-    const acknowledgment = `On it! Searching the history of '${targetChatName}' to answer your question. This might take a moment...`;
+    // // Step B: Acknowledge the Request
+    // const acknowledgment = `On it! Searching the history of '${targetChatName}' to answer your question. This might take a moment...`;
     
-    if (isFromGroup) {
-      await message.reply(acknowledgment);
-    } else {
-      await this.client.sendMessage(replyTarget, acknowledgment);
-    }
+    // if (isFromGroup) {
+    //   await message.reply(acknowledgment);
+    // } else {
+    //   await this.client.sendMessage(replyTarget, acknowledgment);
+    // }
 
     try {
       // Step C: Fetch All Messages from Target Chat
@@ -117,7 +117,7 @@ export class AskProcessor implements IMessageProcessor {
       const answer = await this.geminiService.generateAnswer(formattedHistory, question);
 
       // Step F: Send Result
-      const finalResponse = `💬 **Answer about '${targetChatName}':**\n\n${answer}`;
+      const finalResponse = `💬 *Answer about '${targetChatName}':*\n\n${answer}`;
       
       if (isFromGroup) {
         await message.reply(finalResponse);
